@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <!-- <link rel="stylesheet" href="css/recursive-b025-wakamaifondue.css" />
+    <link rel="stylesheet" href="css/prism.css" /> -->
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <h1 class="recursive-b025-sans-casual-bold">Recursive Demo</h1>
+
+    <p>
+      The idea is to test Recursive in different contexts and under different circumstances. I'm particularly interested in the following:
+    </p>
+    <ol>
+      <li>How do make a text follow a named instance?</li>
+      <li>
+        How the different named instances and OpenType features work together
+      </li>
+      <li>How does the monospaced family work with code?</li>
+      <li>
+        Does the monospaced fonts affect tools like Highlight.js or Prism?
+      </li>
+      <li>How does the font work at larger sizes?</li>
+    </ol>
+
+    <h2 class="recursive-b025-sans-casual-black">
+      How do we add named instances to the text?
+    </h2>
+
+    <p>
+      There are two ways to woork with variable fonts predefined instances. The
+      first one only works if you're generating classes for the instances. For
+      example, the following code will use the
+      <code>recursive-b025-sans-casual-bold</code> pre-defined instance
+    </p>
+
+    <pre><code class="language-css">&lt;h2 class="recursive-b025-sans-casual-bold">How do we add named instances to
+the text?&lt;/h2></code></pre>
+
+    <p>
+      So, in theory, we just select the class associated with the named instance
+      and add it to the element or to a parent container like <code>div</code>,
+      <code>section</code> or <code>article</code> and that's all we need to do.
+    </p>
+
+    <p>
+      Another option is to use
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties">CSS Custom Properties</a>to define the default for properties and then use <code>font-variation-settings</code> to set them all at once. Because of a limitation of cascading font-variant-settings, this is the best way to do it if you don't want to re-write the entire rules every time any individual value changes.
+    </p>
+
+    <pre><code class="language-css">:root {
+  --vf-mono: "MONO" 0;
+  --vf-casl: "CASL" 1;
+  --vf-slnt: "slnt" 0
+  --vf-ital: "ital" 0.5;
+  --vf-weight: 400;
+  font-weight: var(--vf-weight);
+  font-variation-settings:    var(--vf-mono),
+                              var(--vf-casl),
+                              var(--vf-slant);
+                              var(--vf-ital);
+  }</code></pre>
+
+    <p>
+      The hardest way to use a variable font is to modify
+      <code>font-variation-settings</code> for all the axes that don't have a
+      corresponding CSS property. In the example below,
+      <code>font-weight</code> represents the <code>wght</code> axis but all the
+      other axes need to go inside <code>font-variation-settings</code> either
+      because they are custom axes (MONO and CASL) or because we want to avoid
+      conflicts (slnt and ital).
+    </p>
+
+    <pre><code class="language-css">.byline-credit {
+  font-weight: 300;
+  font-variation-settings: "MONO" 0, "CASL" 0, "slnt" -15, "ital" 1;
+}</code></pre>
+
+    <p>You can combine the variable font rules with additional classes for OpenType features or other elements of your design and layout.</p>
+
+    <h2>Does it work with syntax highlighters?</h2>
+
+    <p>
+      I modified the styles for Prism.js to acommodate Recursive Mono as the
+      default font for highlighted code. We put Recursive first in the
+      <code>font-family</code> and we add a set of default values for
+      <code>font-variation-settings</code>. You can see the results throughout
+      this document as the modified Prism syntax highlighter is in use.
+    </p>
+
+    <p><strong>Note:</strong> In the example I also removed prefixed attributes for brevity sake.</p>
+
+    <pre><code class="language-css">code[class*="language-"],
+pre[class*="language-"] {
+  color: #657b83; /* base00 */
+  /* add Recursive to the font stack */
+  font-family: Recursive, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 1em;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+
+  /* To handle variable font */
+  font-weight: 400;
+  font-variation-settings: "MONO" 1, "CASL" 0, "slnt" 0, "ital" 0.5;
+
+  line-height: 1.5;
+
+  /* Change tab size to 2*/
+  tab-size: 2;
+
+  hyphens: none;
+}</code></pre>
+
+    <h2 class="recursive-b025-sans-casual-black">
+      How about longer text?
+    </h2>
+
+    <p>The following example uses the sans serif version of Recursive to layout a longer piece of content. It takes advantage of multiple predefined instances and classes to make a more playful reading experience.</p>
+
+    <article class="example example1">
+      <h2 class="recursive-b025-sans-casual-black centered">
+        How to Move Spheres <br />
+        and <br />
+        Influence <br />
+        People
+      </h2>
+
+      <h2 class="recursive-b025-sans-casual-black centered">Marko Kloos</h2>
+
+      <p class="byline-credit"><strong>Illustrated by: John Picacio</strong></p>
+      <p class="byline-credit">
+        <strong>Edited by: George R. R. Martin</strong>
+      </p>
+
+      <p class="centered"><strong>Card, Turning</strong></p>
+      <p>
+        The first time it happens, she’s in P.E. class, because of course it has
+        to be P.E.
+      </p>
+      <p>
+        It’s fashionable to hate P.E., and most of the other girls at Mapletree
+        Academy claim they do, but T.K. really doesn’t mind it. It’s only twice
+        a week, and they mostly stick to sports she can do with her one working
+        arm. She knows she could easily get out of P.E. by pulling the Cripple
+        Card (although she never calls it that; her parents and teachers would
+        flinch in horror at her own insensitivity toward <em>herself</em>, go
+        figure), but she doesn’t because she likes to run around even if she’s
+        not very good at it. She also doesn’t want to give her stuck-up
+        classmates the satisfaction of being able to shoot her pitying glances
+        as she sits on the sidelines and eats Goldfish crackers while doing her
+        math homework. Truth be told: it’s the only time during the week when
+        T.K. doesn’t feel like everyone’s pussyfooting around her disability.
+      </p>
+      <p>
+        They’re playing dodgeball that day, at the end of the class. T.K. is
+        pretty good at it considering she can only use one arm, even if she gets
+        nailed by the ball a little more than the other girls. But this session
+        is a shooting gallery, with her as the target. Again. It’s just two
+        girls who are targeting her specifically—and her left side, too, where
+        she can’t block—but they’re stealthy about it so Mrs. Williams, the P.E.
+        teacher, doesn’t come down on them. For some reason, Brooke MacAllister
+        has decided that if T.K. wants to play with the varsity, she can take
+        the hits too. And for this week, she seems to have recruited Alison
+        Keller to be her wingman, because T.K. is getting targeted fire from two
+        angles. Mapletree has a special version of dodgeball where you have to
+        crank out five push-ups on the spot if you get hit. Mrs. Williams wanted
+        to give her a waiver on the push-ups, but T.K. refused the special
+        treatment. She’s not strong enough for one-armed pushups, but she can do
+        crunches just fine, so she does those instead. And today, she’s doing a
+        lot of crunches courtesy of Brooke and Alison. In the middle of her
+        fifth set, a ball comes in and beans her on the left side of the head
+        just as she is coming up from a crunch.
+      </p>
+      <p>“Ow!”</p>
+      <p>
+        T.K. glares in the direction of the ball’s origin and spots Brooke, who
+        gives her a curt and jock-like “Sorry!” without even the slightest tone
+        of apology in her voice. T.K. doesn’t want to make anything of it, so
+        she doesn’t even look for Mrs. Williams, but she has her limits, and
+        Brooke’s attention is starting to poke at the edges of them. She
+        finishes her crunches and gets back up to rejoin the ranks. Another ball
+        shoots past her face, so close that she can practically smell the
+        rubber, and she ducks and flinches. This one came from the other side of
+        the court, from Alison’s direction, but Alison pretends to not notice
+        T.K.’s glare as she conspicuously picks another target. T.K. grabs a
+        ricochet off the gym floor and chucks it at Alison, but it misses her by
+        a foot and smacks into the mats lining the wall behind her. Alison looks
+        over to T.K. and smirks, which only serves to crank up the dial of
+        T.K.’s Pissed-Off-O-Meter another notch. She can’t really complain about
+        them throwing balls at her, because that’s what the game is about. But
+        getting singled out for no good reason takes the fun out of it.
+      </p>
+      <p>
+        “One minute,” Mrs. Williams shouts from the sideline. “Wrap it up,
+        ladies!” Then she turns around and checks her cell phone. T.K. groans.
+      </p>
+      <p>
+        “Don’t you—” she calls over to Brooke, but Brooke does, and so does
+        Alison. Of course they were waiting for the opportunity for one last
+        cheap shot. Alison’s shot hits T.K.’s right thigh and bounces off.
+        Brooke’s ball comes in a flat arc, and T.K. knows that she’ll take the
+        stupid thing right on the bridge of her nose.
+      </p>
+      <p>That’s when the thing happens.</p>
+      <p>
+        Later, she’ll puzzle about what triggered it. She’s hot and sweaty,
+        angry at Brooke and Alison, hurting from the shot to the bare skin of
+        her leg, and the muscles on her left side, the one with the paralysis,
+        are taut enough to snap, which is what happens when she overexerts
+        herself. But she knows that she feels a swell of fresh anger, and
+        something goes snap in her brain. There’s a hot, trickling sensation,
+        like someone just opened the top of her skull and poured a cup of coffee
+        directly on the back side of her brain and down her spinal column. T.K.
+        raises her hand to keep the ball from hitting her in the face, even
+        though she knows it’s too late for that. But then the strangest
+        sensation follows the hot trickle. She can feel the ball not three feet
+        in front of her face—its roundness, the way it displaces the air around
+        it—and she gives it a tiny little shunt with her mind, and it’s the best
+        feeling she’s ever had, like finally scratching an itch you couldn’t get
+        to for an hour, only a hundred times better. The ball—the one that was
+        about to give her a nosebleed—hooks ever so slightly to the left and
+        whizzes past her left side, close enough to her ear that she can hear it
+        whistling through the air.
+      </p>
+      <p>
+        Nobody notices. T.K. isn’t even sure that Brooke saw the ball didn’t fly
+        true, that it made a little skip at the end of its arc. There are still
+        half a dozen other balls in the air, and there’s a lot of movement and
+        yelling, kids paying attention to throwing or not getting hit. But she
+        is dead sure that she caused that little skip, because she knows that
+        for just that half second, the ball was in her control, and that it went
+        precisely where she had wanted it to go.
+      </p>
+      <p>&nbsp;</p>
+      <p>
+        They hit the showers and get dressed, and T.K. is too amazed and shaken
+        to seek out Brooke and Alison to bitch at them. Now that P.E. is over,
+        nobody pays attention to her anymore. In the first few weeks after she
+        joined the class, her awkward-looking one-handed maneuver to get back
+        into her bra and shirt got some interest from the other girls in the
+        locker room, but that’s old hat now, and she finishes up and leaves as
+        quickly as she can.
+      </p>
+    </article>
+
+    <h2 class="recursive-b025-sans-casual-black">
+        And multicolumns?
+      </h2>
+
+      <p>The biggest question, for me, when working with this font in multiple columns is whether the monospaced font works as well as the sans serif version for this type of content. The example below uses the monospaced family for two-column layout.</p>
+
+      <article class="example example2 recursive-b025-mono-linear">
+        <h2 class="recursive-b025-sans-casual-black">
+          How to Move Spheres <br />
+          and <br />
+          Influence <br />
+          People
+        </h2>
+
+        <h2 class="recursive-b025-sans-casual-black">Marko Kloos</h2>
+
+        <p class="byline-credit"><strong>Illustrated by: John Picacio</strong></p>
+        <p class="byline-credit">
+          <strong>Edited by: George R. R. Martin</strong>
+        </p>
+
+        <p class="centered"><strong>Card, Turning</strong></p>
+        <p>
+          The first time it happens, she’s in P.E. class, because of course it has
+          to be P.E.
+        </p>
+        <p>
+          It’s fashionable to hate P.E., and most of the other girls at Mapletree
+          Academy claim they do, but T.K. really doesn’t mind it. It’s only twice
+          a week, and they mostly stick to sports she can do with her one working
+          arm. She knows she could easily get out of P.E. by pulling the Cripple
+          Card (although she never calls it that; her parents and teachers would
+          flinch in horror at her own insensitivity toward <em>herself</em>, go
+          figure), but she doesn’t because she likes to run around even if she’s
+          not very good at it. She also doesn’t want to give her stuck-up
+          classmates the satisfaction of being able to shoot her pitying glances
+          as she sits on the sidelines and eats Goldfish crackers while doing her
+          math homework. Truth be told: it’s the only time during the week when
+          T.K. doesn’t feel like everyone’s pussyfooting around her disability.
+        </p>
+        <p>
+          They’re playing dodgeball that day, at the end of the class. T.K. is
+          pretty good at it considering she can only use one arm, even if she gets
+          nailed by the ball a little more than the other girls. But this session
+          is a shooting gallery, with her as the target. Again. It’s just two
+          girls who are targeting her specifically—and her left side, too, where
+          she can’t block—but they’re stealthy about it so Mrs. Williams, the P.E.
+          teacher, doesn’t come down on them. For some reason, Brooke MacAllister
+          has decided that if T.K. wants to play with the varsity, she can take
+          the hits too. And for this week, she seems to have recruited Alison
+          Keller to be her wingman, because T.K. is getting targeted fire from two
+          angles. Mapletree has a special version of dodgeball where you have to
+          crank out five push-ups on the spot if you get hit. Mrs. Williams wanted
+          to give her a waiver on the push-ups, but T.K. refused the special
+          treatment. She’s not strong enough for one-armed pushups, but she can do
+          crunches just fine, so she does those instead. And today, she’s doing a
+          lot of crunches courtesy of Brooke and Alison. In the middle of her
+          fifth set, a ball comes in and beans her on the left side of the head
+          just as she is coming up from a crunch.
+        </p>
+        <p>“Ow!”</p>
+        <p>
+          T.K. glares in the direction of the ball’s origin and spots Brooke, who
+          gives her a curt and jock-like “Sorry!” without even the slightest tone
+          of apology in her voice. T.K. doesn’t want to make anything of it, so
+          she doesn’t even look for Mrs. Williams, but she has her limits, and
+          Brooke’s attention is starting to poke at the edges of them. She
+          finishes her crunches and gets back up to rejoin the ranks. Another ball
+          shoots past her face, so close that she can practically smell the
+          rubber, and she ducks and flinches. This one came from the other side of
+          the court, from Alison’s direction, but Alison pretends to not notice
+          T.K.’s glare as she conspicuously picks another target. T.K. grabs a
+          ricochet off the gym floor and chucks it at Alison, but it misses her by
+          a foot and smacks into the mats lining the wall behind her. Alison looks
+          over to T.K. and smirks, which only serves to crank up the dial of
+          T.K.’s Pissed-Off-O-Meter another notch. She can’t really complain about
+          them throwing balls at her, because that’s what the game is about. But
+          getting singled out for no good reason takes the fun out of it.
+        </p>
+        <p>
+          “One minute,” Mrs. Williams shouts from the sideline. “Wrap it up,
+          ladies!” Then she turns around and checks her cell phone. T.K. groans.
+        </p>
+        <p>
+          “Don’t you—” she calls over to Brooke, but Brooke does, and so does
+          Alison. Of course they were waiting for the opportunity for one last
+          cheap shot. Alison’s shot hits T.K.’s right thigh and bounces off.
+          Brooke’s ball comes in a flat arc, and T.K. knows that she’ll take the
+          stupid thing right on the bridge of her nose.
+        </p>
+        <p>That’s when the thing happens.</p>
+        <p>
+          Later, she’ll puzzle about what triggered it. She’s hot and sweaty,
+          angry at Brooke and Alison, hurting from the shot to the bare skin of
+          her leg, and the muscles on her left side, the one with the paralysis,
+          are taut enough to snap, which is what happens when she overexerts
+          herself. But she knows that she feels a swell of fresh anger, and
+          something goes snap in her brain. There’s a hot, trickling sensation,
+          like someone just opened the top of her skull and poured a cup of coffee
+          directly on the back side of her brain and down her spinal column. T.K.
+          raises her hand to keep the ball from hitting her in the face, even
+          though she knows it’s too late for that. But then the strangest
+          sensation follows the hot trickle. She can feel the ball not three feet
+          in front of her face—its roundness, the way it displaces the air around
+          it—and she gives it a tiny little shunt with her mind, and it’s the best
+          feeling she’s ever had, like finally scratching an itch you couldn’t get
+          to for an hour, only a hundred times better. The ball—the one that was
+          about to give her a nosebleed—hooks ever so slightly to the left and
+          whizzes past her left side, close enough to her ear that she can hear it
+          whistling through the air.
+        </p>
+        <p>
+          Nobody notices. T.K. isn’t even sure that Brooke saw the ball didn’t fly
+          true, that it made a little skip at the end of its arc. There are still
+          half a dozen other balls in the air, and there’s a lot of movement and
+          yelling, kids paying attention to throwing or not getting hit. But she
+          is dead sure that she caused that little skip, because she knows that
+          for just that half second, the ball was in her control, and that it went
+          precisely where she had wanted it to go.
+        </p>
+        <p>&nbsp;</p>
+        <p>
+          They hit the showers and get dressed, and T.K. is too amazed and shaken
+          to seek out Brooke and Alison to bitch at them. Now that P.E. is over,
+          nobody pays attention to her anymore. In the first few weeks after she
+          joined the class, her awkward-looking one-handed maneuver to get back
+          into her bra and shirt got some interest from the other girls in the
+          locker room, but that’s old hat now, and she finishes up and leaves as
+          quickly as she can.
+        </p>
+      </article>
+
+    <h2 class="recursive-b025-sans-casual-black">How does it work at larger sizes?</h2>
+
+    <p>I'm intrigued by the casual (CASL) axis in Recursive. Would it lend itself to large size display-type work?</p>
+
+    <p>In the example below:</p>
+
+    <ul>
+      <li>The first item uses the default sans serif boldfaced predefined axis</li>
+      <li>The second one uses the casual boldfaced instance</li>
+      <li>The last one uses the monospaced casual bold predefined instance</li>
+    </ul>
+
+    <div class="example example3">
+
+      <h2 class="recursive-b025-sans-linear-bold">This is an example</h2>
+
+      <h2 class="recursive-b025-sans-casual-bold">This is an example</h2>
+
+      <h2 class="recursive-b025-mono-casual-bold">This is an example</h2>
+    </div>
+
+    <p>And the corresponding code looks like this:</p>
+
+    <pre><code class="language-css">&lt;div class="example example3">
+  &lt;h2 class="recursive-b025-sans-linear-bold">This is an example&lt;/h2>
+
+  &lt;h2 class="recursive-b025-sans-casual-bold">This is an example&lt;/h2>
+
+  &lt;h2 class="recursive-b025-mono-casual-bold">This is an example&lt;/h2>
+&lt;/div></code></pre>
+
+    <script src="js/prism.js"></script>
+    <script src="js/fontfaceobserver.standalone.js"></script>
+    <script>
+      // Run font-face observer
+      const font = new FontFaceObserver('Recursive');
+
+      font.load().then(function() {
+        console.log('Recursive has loaded.');
+      });
+    </script>
+  </body>
+</html>

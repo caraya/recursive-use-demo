@@ -1,0 +1,39 @@
+@import url('recursive-b025-wakamaifondue.css');
+@import url('prism.css');
+
+html {
+  padding: 2em;
+  font-family: var(--sans-font-stack);
+  font-size: var(--base-font-size);
+}
+
+.centered {
+  text-align: center;
+}
+
+.example {
+  border: 5px solid rebeccapurple;
+  padding: 1em;
+  width: 80%;
+}
+
+.example1 .byline-credit {
+  font-weight: 300;
+  font-variation-settings: "MONO" 0, "CASL" 1, "slnt" -15, "ital" 1;
+  text-transform: uppercase;
+}
+
+.example1 p {
+  line-height: 1.1
+}
+
+.example2 {
+  columns: 2;
+  column-gap: 3em;
+  column-rule: 2px solid blue;
+}
+
+.example3 h2{
+  font-size: 4.5em;
+}
+
